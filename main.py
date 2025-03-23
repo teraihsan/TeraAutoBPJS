@@ -5,8 +5,9 @@ from tkinter import Tk, Label, messagebox
 
 app = Flask(__name__)
 
+APPNAME ="TeraAutoBPJS" 
 PORT = 8087
-SERVICE_STATUS = f"TeraAutoBPJS is Using Port {PORT}"
+SERVICE_STATUS = f"{APPNAME} is Using Port {PORT}"
 SERVER_RUNNING = False
 SERVER_THREAD = None
 
@@ -28,7 +29,7 @@ def autoprint_pdf():
         if not keysearch:
             return jsonify({'error': True, 'msg': 'Failed to Execute Automation', 'hint': 'params error: invalid keysearch'}), 400
 
-        program = f'./TeraAutoBPJS.exe'
+        program = f'./{APPNAME}.exe'
         args = [];
         args.extend([f"{keysearch}"])
 
@@ -76,7 +77,7 @@ info_label = Label(window, text="", font=("Arial", 14))
 info_label.pack(pady=10)
 
 # Status Label
-creator_label = Label(window, text="github.com/IhsanSonz/TeraAutoBPJS", font=("Arial", 8))
+creator_label = Label(window, text=f"github.com/IhsanSonz/{APPNAME}", font=("Arial", 8))
 creator_label.pack(pady=10)
 
 # Bind on_closing function to WM_DELETE_WINDOW event
