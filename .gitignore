@@ -1,0 +1,8 @@
+SumatraPDF-settings.txt
+dist/pdf/*
+!dist/pdf/.gitkeep
+build/
+__pycache__/
+*.spec
+.venv/
+TeraAutoBPJS.env.txt

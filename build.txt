@@ -1,0 +1,1 @@
+pyinstaller --onefile -i github-logo.ico -n TeraAutoBPJSService --hide-console hide-early main.py
