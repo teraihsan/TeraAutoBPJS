@@ -77,7 +77,7 @@ info_label = Label(window, text="", font=("Arial", 14))
 info_label.pack(pady=10)
 
 # Status Label
-creator_label = Label(window, text=f"github.com/IhsanSonz/{APPNAME}", font=("Arial", 8))
+creator_label = Label(window, text=f"github.com/teraihsan/{APPNAME}", font=("Arial", 8))
 creator_label.pack(pady=10)
 
 # Bind on_closing function to WM_DELETE_WINDOW event
