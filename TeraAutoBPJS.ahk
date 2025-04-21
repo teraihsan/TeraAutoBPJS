@@ -102,7 +102,7 @@ AutoFrista() {
 
         ; Check if the window was found
         if !WinExist(loginTitle) {
-            Notify("Login window not found within 5 seconds.")
+            Notify("Login window not found within " . secWait . " seconds.")
             return
         }
 
