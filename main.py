@@ -35,7 +35,7 @@ def autoprint_pdf():
 
         program = f'./{APPNAME}.exe'
         args = [];
-        args.extend([f"{keysearch}", f"{automate}"])
+        args.extend([f"{automate}", f"{keysearch}"])
 
         logging.info(f'keysearch: {keysearch}')
         logging.info(f'args: {args}')
