@@ -22,16 +22,20 @@ def is_readable(filename):
 def service_status():
     return jsonify({'status': SERVICE_STATUS})
 
-@app.route('/auto-frista', methods=['POST'])
+@app.route('/auto-bpjs', methods=['POST'])
 def autoprint_pdf():
     try:
+        automate = request.form.get('automate')
+        if not automate:
+            return jsonify({'error': True, 'msg': 'Failed to Execute Automation', 'hint': 'params error: invalid automate'}), 400
+
         keysearch = request.form.get('keysearch')
         if not keysearch:
             return jsonify({'error': True, 'msg': 'Failed to Execute Automation', 'hint': 'params error: invalid keysearch'}), 400
 
         program = f'./{APPNAME}.exe'
         args = [];
-        args.extend([f"{keysearch}"])
+        args.extend([f"{keysearch}", f"{automate}"])
 
         logging.info(f'keysearch: {keysearch}')
         logging.info(f'args: {args}')
