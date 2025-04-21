@@ -75,6 +75,8 @@ AutoFrista() {
     try {
         ; Path to the application executable
         appPath := env["appPath"]
+        secWait := env["fristaWait"]
+        milDelay := env["fristaDelay"]
 
         ; Login and Window Title of the Application
         loginTitle := env["loginTitle"]
@@ -96,7 +98,7 @@ AutoFrista() {
 
         Run(appPath)
         ; Wait for the window to become active
-        WinWaitActive("ahk_exe " . loginTitle, "", 5) ; Wait up to 5 seconds
+        WinWaitActive("ahk_exe " . loginTitle, "", secWait * 1) ; Wait up to 5 seconds
 
         ; Check if the window was found
         if !WinExist(loginTitle) {
@@ -140,6 +142,8 @@ AutoFinger() {
     try {
         ; Path to the application executable
         appPath := env["appPathFinger"]
+        secWait := env["fingerWait"]
+        milDelay := env["fingerDelay"]
 
         ; Title of the Application
         appTitle := env["appTitle"]
@@ -164,7 +168,7 @@ AutoFinger() {
 
         Run(appPath)
         ; Wait for the window to become active
-        WinWaitActive("ahk_exe " . appTitle, "", 5) ; Wait up to 5 seconds
+        WinWaitActive("ahk_exe " . appTitle, "", secWait * 1) ; Wait up to 5 seconds
 
         ; Check if the window was found
         if !WinExist(appTitle) {
@@ -184,7 +188,7 @@ AutoFinger() {
         Sleep(100)
         ClickAt(loginX, loginY)
 
-        Sleep(2000) ; Delay between characters (adjust as needed)
+        Sleep(milDelay * 1) ; Delay between characters (adjust as needed)
 
         WinActivate(appTitle)
         ClickAt(nikX, nikY)
