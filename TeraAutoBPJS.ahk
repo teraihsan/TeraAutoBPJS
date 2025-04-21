@@ -1,9 +1,10 @@
 #Requires AutoHotkey v2.0
 
-; Usage & 'C:\Program Files\AutoHotkey\v2\AutoHotkey.exe' .\autofrista.ahk "3204320432043204"
+; Usage & 'C:\Program Files\AutoHotkey\v2\AutoHotkey.exe' .\TeraAutoBPJS.ahk "frista" "3204320432043204"
+; Usage .\autofrista.exe "frista" "3204320432043204"
 
 Notify(text) {
-  TrayTip(text, "TeraAutoBPJS Error")
+    TrayTip(text, "TeraAutoBPJS Error")
 }
 
 ; Function to read environment variables from a file
@@ -11,7 +12,7 @@ ReadEnvFile(filePath) {
     envVars := Map()
     try {
         envFile := FileOpen(filePath, "r")
-		if !envFile {
+        if !envFile {
             TrayTip("File could not be opened: " filePath)
             return {}
         }
@@ -19,7 +20,7 @@ ReadEnvFile(filePath) {
             line := envFile.ReadLine()
             ; TrayTip("line: " line)
             if RegExMatch(line, "^\s*([^=]+)\s*=\s*(.*)\s*$", &matches) {
-				; TrayTip("Variable: " matches[1] " Value: " matches[2])
+                ; TrayTip("Variable: " matches[1] " Value: " matches[2])
                 envVars[Trim(matches[1])] := Trim(matches[2])
             }
         }
@@ -39,7 +40,7 @@ env := ReadEnvFile(envFilePath)
 
 ; Check if variables were loaded successfully
 if !env {
-    Return ; Exit script if env file could not be loaded.
+    return ; Exit script if env file could not be loaded.
 }
 
 ; Function to move mouse and click
@@ -50,73 +51,149 @@ ClickAt(x, y) {
 
 ; Function to input text
 InputText(text) {
-    Loop StrLen(text) {
-		SendInput("{Raw}" SubStr(text, A_Index, 1))
+    loop StrLen(text) {
+        SendInput("{Raw}" SubStr(text, A_Index, 1))
         Sleep(5) ; Delay between characters (adjust as needed)
     }
 }
 
 ; Run
-Try {
-	; Path to the application executable
-	appPath := env["appPath"]
+method := A_Args[1] ; example "frista"
+keysearch := A_Args[2] ; example "3240324032043204"
+switch method {
+    case "frista":
+        AutoFrista()
+        return
+    case "finger":
+        AutoFinger()
+        return
+    default:
+        Notify("Unknown method given!")
+}
 
-	; Login and Window Title of the Application
-	loginTitle := env["loginTitle"]
-	windowTitle := env["windowTitle"]
+AutoFrista() {
+    try {
+        ; Path to the application executable
+        appPath := env["appPath"]
 
-	; Coordinates for username, password, and login button
-	usernameX := env["usernameX"]
-	usernameY := env["usernameY"]
-	passwordX := env["passwordX"]
-	passwordY := env["passwordY"]
-	loginX := env["loginX"]
-	loginY := env["loginY"]
-	bpjsX := env["bpjsX"]
-	bpjsY := env["bpjsY"]
+        ; Login and Window Title of the Application
+        loginTitle := env["loginTitle"]
+        windowTitle := env["windowTitle"]
 
-	; The Credentials
-	username := env["username"]
-	password := env["password"]
-	keysearch := A_Args[1]
+        ; Coordinates for username, password, and login button
+        usernameX := env["usernameX"]
+        usernameY := env["usernameY"]
+        passwordX := env["passwordX"]
+        passwordY := env["passwordY"]
+        loginX := env["loginX"]
+        loginY := env["loginY"]
+        bpjsX := env["bpjsX"]
+        bpjsY := env["bpjsY"]
 
-  Run(appPath)
-	; Wait for the window to become active
-	WinWaitActive("ahk_exe " . loginTitle, "", 5) ; Wait up to 5 seconds
+        ; The Credentials
+        username := env["username"]
+        password := env["password"]
 
-	; Check if the window was found
-	if !WinExist(loginTitle) {
-		Notify("Login window not found within 5 seconds.")
-		return
-	}
+        Run(appPath)
+        ; Wait for the window to become active
+        WinWaitActive("ahk_exe " . loginTitle, "", 5) ; Wait up to 5 seconds
 
-	WinActivate(loginTitle)
+        ; Check if the window was found
+        if !WinExist(loginTitle) {
+            Notify("Login window not found within 5 seconds.")
+            return
+        }
 
-	ClickAt(usernameX, usernameY)
-	Sleep(100)
-	InputText(username)
-	Sleep(100)
-	ClickAt(passwordX, passwordY)
-	Sleep(100)
-	InputText(password)
-	Sleep(100)
-	ClickAt(loginX, loginY)
+        WinActivate(loginTitle)
 
-	; Wait for the window to become active
-	WinWaitActive("ahk_exe " . windowTitle, "", 5) ; Wait up to 5 seconds
+        ClickAt(usernameX, usernameY)
+        Sleep(100)
+        InputText(username)
+        Sleep(100)
+        ClickAt(passwordX, passwordY)
+        Sleep(100)
+        InputText(password)
+        Sleep(100)
+        ClickAt(loginX, loginY)
 
-	; Check if the window was found
-	if !WinExist(windowTitle) {
-		Notify("Application window not found within 5 seconds.")
-		return
-	}
+        ; Wait for the window to become active
+        WinWaitActive("ahk_exe " . windowTitle, "", 5) ; Wait up to 5 seconds
 
-	WinActivate(windowTitle)
-	ClickAt(bpjsX, bpjsY)
-	Sleep(100)
-	InputText(keysearch)
-	Sleep(100)
+        ; Check if the window was found
+        if !WinExist(windowTitle) {
+            Notify("Application window not found within 5 seconds.")
+            return
+        }
 
-} catch as e {
-  Notify("An error occurred: `n" e.Stack)
+        WinActivate(windowTitle)
+        ClickAt(bpjsX, bpjsY)
+        Sleep(100)
+        InputText(keysearch)
+        Sleep(100)
+
+    } catch as e {
+        Notify("An error occurred: `n" e.Stack)
+    }
+}
+
+AutoFinger() {
+    try {
+        ; Path to the application executable
+        appPath := env["appPathFinger"]
+
+        ; Title of the Application
+        appTitle := env["appTitle"]
+
+        ; Coordinates for username, password, and login button
+        usernameX := env["fpUsernameX"]
+        usernameY := env["fpUsernameY"]
+        passwordX := env["fpPasswordX"]
+        passwordY := env["fpPasswordY"]
+        loginX := env["fpLoginX"]
+        loginY := env["fpLoginY"]
+
+        ; The Credentials
+        username := env["fpUsername"]
+        password := env["fpPassword"]
+
+        ; Coordinates for filling inputs
+        nikX := env["fpNikX"]
+        nikY := env["fpNikY"]
+        inputX := env["fpInputX"]
+        inputY := env["fpInputY"]
+
+        Run(appPath)
+        ; Wait for the window to become active
+        WinWaitActive("ahk_exe " . appTitle, "", 5) ; Wait up to 5 seconds
+
+        ; Check if the window was found
+        if !WinExist(appTitle) {
+            Notify("Login window not found within 5 seconds.")
+            return
+        }
+
+        WinActivate(appTitle)
+
+        ClickAt(usernameX, usernameY)
+        Sleep(100)
+        InputText(username)
+        Sleep(100)
+        ClickAt(passwordX, passwordY)
+        Sleep(100)
+        InputText(password)
+        Sleep(100)
+        ClickAt(loginX, loginY)
+
+        Sleep(2000) ; Delay between characters (adjust as needed)
+
+        WinActivate(appTitle)
+        ClickAt(nikX, nikY)
+        Sleep(100)
+        ClickAt(inputX, inputY)
+        InputText(keysearch)
+        Sleep(100)
+
+    } catch as e {
+        Notify("An error occurred: `n" e.Stack)
+    }
 }
